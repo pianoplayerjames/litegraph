@@ -1,0 +1,87 @@
+{
+  "name": "litegraph-esm",
+  "version": "0.6.1",
+  "description": "LiteGraph.js - A graph node engine and editor converted to ES6 modules",
+  "type": "module",
+  "main": "./index.js",
+  "module": "./index.js",
+  "exports": {
+    ".": {
+      "import": "./index.js",
+      "types": "./index.d.ts"
+    },
+    "./LiteGraph": {
+      "import": "./LiteGraph.js",
+      "types": "./LiteGraph.d.ts"
+    },
+    "./LGraph": {
+      "import": "./LGraph.js",
+      "types": "./LGraph.d.ts"
+    },
+    "./LGraphNode": {
+      "import": "./LGraphNode.js",
+      "types": "./LGraphNode.d.ts"
+    },
+    "./LGraphCanvas": {
+      "import": "./LGraphCanvas.js",
+      "types": "./LGraphCanvas.d.ts"
+    },
+    "./LGraphGroup": {
+      "import": "./LGraphGroup.js",
+      "types": "./LGraphGroup.d.ts"
+    },
+    "./LLink": {
+      "import": "./LLink.js",
+      "types": "./LLink.d.ts"
+    },
+    "./DragAndScale": {
+      "import": "./DragAndScale.js",
+      "types": "./DragAndScale.d.ts"
+    },
+    "./ContextMenu": {
+      "import": "./ContextMenu.js",
+      "types": "./ContextMenu.d.ts"
+    },
+    "./CurveEditor": {
+      "import": "./CurveEditor.js",
+      "types": "./CurveEditor.d.ts"
+    },
+    "./nodes": {
+      "import": "./nodes/index.js"
+    },
+    "./nodes/*": {
+      "import": "./nodes/*.js"
+    }
+  },
+  "types": "./index.d.ts",
+  "files": [
+    "*.js",
+    "*.d.ts",
+    "nodes/*.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "graph",
+    "node",
+    "editor",
+    "visual-programming",
+    "litegraph",
+    "esm",
+    "es6"
+  ],
+  "author": "Javi Agenjo (original), WebArcade Team (ESM conversion)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webarcade/litegraph-esm"
+  },
+  "homepage": "https://github.com/jagenjo/litegraph.js",
+  "bugs": {
+    "url": "https://github.com/webarcade/litegraph-esm/issues"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "sideEffects": false
+}
