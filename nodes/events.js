@@ -8,6 +8,11 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerEventsNodes(LiteGraph) {
+// Helper function for clamping values
+function clamp(v, min, max) {
+    return v < min ? min : (v > max ? max : v);
+}
+
 //event related nodes//Show value inside the debug console
     function LogEvent() {
         this.size = [60, 30];

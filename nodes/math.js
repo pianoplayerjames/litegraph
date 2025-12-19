@@ -8,6 +8,11 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerMathNodes(LiteGraph) {
+// Helper function for clamping values
+function clamp(v, min, max) {
+    return v < min ? min : (v > max ? max : v);
+}
+
 //Converter
     function Converter() {
         this.addInput("in", 0);

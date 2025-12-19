@@ -10,6 +10,11 @@
 export function registerMath3dNodes(LiteGraph) {
 var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
 
+// Helper function for clamping values
+function clamp(v, min, max) {
+    return v < min ? min : (v > max ? max : v);
+}
+
 // Fix: Define DEG2RAD constant
 var DEG2RAD = Math.PI / 180;
 

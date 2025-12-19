@@ -1,6 +1,6 @@
 {
   "name": "litegraph-esm",
-  "version": "0.7.6",
+  "version": "0.7.8",
   "description": "LiteGraph.js - A graph node engine and editor converted to ES6 modules",
   "type": "module",
   "main": "./index.js",

@@ -11,6 +11,11 @@ export function registerGltexturesNodes(LiteGraph) {
 var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
 var LGraphCanvas = _global.LGraphCanvas;
 
+// Helper function for clamping values
+function clamp(v, min, max) {
+    return v < min ? min : (v > max ? max : v);
+}
+
     //Works with Litegl.js to create WebGL nodes
     _global.LGraphTexture = null;
 

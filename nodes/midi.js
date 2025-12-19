@@ -8,6 +8,11 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerMidiNodes(LiteGraph) {
+// Helper function for clamping values
+function clamp(v, min, max) {
+    return v < min ? min : (v > max ? max : v);
+}
+
 var MIDI_COLOR = "#243";
 
     function MIDIEvent(data) {
