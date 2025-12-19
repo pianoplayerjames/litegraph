@@ -8,6 +8,11 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerInterfaceNodes(LiteGraph) {
+// Fix: Define clamp helper function
+function clamp(v, min, max) {
+    return v < min ? min : (v > max ? max : v);
+}
+
 //widgets
 /* Button ****************/
 

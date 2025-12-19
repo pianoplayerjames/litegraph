@@ -9,6 +9,10 @@
  */
 export function registerAudioNodes(LiteGraph) {
 var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
+
+// Fix: Extract LGraph from LiteGraph to access STATUS_RUNNING constant
+var LGraph = LiteGraph.LGraph;
+
 var LGAudio = {};
     _global.LGAudio = LGAudio;
 
@@ -744,6 +748,17 @@ var LGAudio = {};
         this.addInput("in", "audio");
         this.addInput("gain", "number");
         this.addOutput("out", "audio");
+
+        //visible widget for gain control
+        var that = this;
+        this.addWidget("slider", "Gain", this.properties.gain, function(v) {
+            that.properties.gain = v;
+            if (that.audionode && that.audionode.gain) {
+                that.audionode.gain.value = v;
+            }
+        }, { min: 0, max: 1, step: 0.01 });
+
+        this.size = [160, 80];
     }
 
     LGAudioGain.prototype.onExecute = function() {
@@ -1148,6 +1163,24 @@ LiteGraph.registerNodeType("audio/waveShaper", LGAudioWaveShaper);
 
         //slots
         this.addOutput("out", "audio");
+
+        //visible widgets
+        var that = this;
+        this.addWidget("combo", "Wave", this.properties.type, function(v) {
+            that.properties.type = v;
+            if (that.audionode) {
+                that.audionode.type = v;
+            }
+        }, { values: ["sine", "square", "sawtooth", "triangle"] });
+
+        this.addWidget("number", "Freq", this.properties.frequency, function(v) {
+            that.properties.frequency = v;
+            if (that.audionode && that.audionode.frequency) {
+                that.audionode.frequency.value = v;
+            }
+        }, { min: 20, max: 2000, step: 1 });
+
+        this.size = [180, 100];
     }
 
     LGAudioOscillatorNode.prototype.onStart = function() {

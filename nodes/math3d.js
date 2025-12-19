@@ -9,6 +9,46 @@
  */
 export function registerMath3dNodes(LiteGraph) {
 var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
+
+// Fix: Define DEG2RAD constant
+var DEG2RAD = Math.PI / 180;
+
+// Fix: Extract glMatrix functions from global scope or create minimal fallbacks
+var glMatrix = _global.glMatrix;
+var vec3 = (glMatrix && glMatrix.vec3) || _global.vec3 || {
+    create: function() { return new Float32Array(3); },
+    fromValues: function(x, y, z) { return new Float32Array([x, y, z]); },
+    add: function(out, a, b) { out[0] = a[0] + b[0]; out[1] = a[1] + b[1]; out[2] = a[2] + b[2]; return out; },
+    sub: function(out, a, b) { out[0] = a[0] - b[0]; out[1] = a[1] - b[1]; out[2] = a[2] - b[2]; return out; },
+    mul: function(out, a, b) { out[0] = a[0] * b[0]; out[1] = a[1] * b[1]; out[2] = a[2] * b[2]; return out; },
+    div: function(out, a, b) { out[0] = a[0] / b[0]; out[1] = a[1] / b[1]; out[2] = a[2] / b[2]; return out; },
+    scale: function(out, a, s) { out[0] = a[0] * s; out[1] = a[1] * s; out[2] = a[2] * s; return out; },
+    dot: function(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; },
+    cross: function(out, a, b) { var ax = a[0], ay = a[1], az = a[2], bx = b[0], by = b[1], bz = b[2]; out[0] = ay * bz - az * by; out[1] = az * bx - ax * bz; out[2] = ax * by - ay * bx; return out; },
+    length: function(a) { return Math.sqrt(a[0] * a[0] + a[1] * a[1] + a[2] * a[2]); },
+    normalize: function(out, a) { var len = vec3.length(a); if (len > 0) { len = 1 / len; out[0] = a[0] * len; out[1] = a[1] * len; out[2] = a[2] * len; } return out; },
+    transformQuat: function(out, a, q) { var x = a[0], y = a[1], z = a[2], qx = q[0], qy = q[1], qz = q[2], qw = q[3], ix = qw * x + qy * z - qz * y, iy = qw * y + qz * x - qx * z, iz = qw * z + qx * y - qy * x, iw = -qx * x - qy * y - qz * z; out[0] = ix * qw + iw * -qx + iy * -qz - iz * -qy; out[1] = iy * qw + iw * -qy + iz * -qx - ix * -qz; out[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx; return out; }
+};
+
+var mat4 = (glMatrix && glMatrix.mat4) || _global.mat4 || {
+    create: function() { var out = new Float32Array(16); out[0] = 1; out[5] = 1; out[10] = 1; out[15] = 1; return out; },
+    identity: function(out) { out.fill(0); out[0] = 1; out[5] = 1; out[10] = 1; out[15] = 1; return out; },
+    translate: function(out, a, v) { out.set(a); out[12] += v[0]; out[13] += v[1]; out[14] += v[2]; return out; },
+    scale: function(out, a, v) { out.set(a); out[0] *= v[0]; out[5] *= v[1]; out[10] *= v[2]; return out; },
+    multiply: function(out, a, b) { var a00 = a[0], a01 = a[1], a02 = a[2], a03 = a[3], a10 = a[4], a11 = a[5], a12 = a[6], a13 = a[7], a20 = a[8], a21 = a[9], a22 = a[10], a23 = a[11], a30 = a[12], a31 = a[13], a32 = a[14], a33 = a[15]; var b0 = b[0], b1 = b[1], b2 = b[2], b3 = b[3]; out[0] = b0*a00 + b1*a10 + b2*a20 + b3*a30; out[1] = b0*a01 + b1*a11 + b2*a21 + b3*a31; out[2] = b0*a02 + b1*a12 + b2*a22 + b3*a32; out[3] = b0*a03 + b1*a13 + b2*a23 + b3*a33; b0 = b[4]; b1 = b[5]; b2 = b[6]; b3 = b[7]; out[4] = b0*a00 + b1*a10 + b2*a20 + b3*a30; out[5] = b0*a01 + b1*a11 + b2*a21 + b3*a31; out[6] = b0*a02 + b1*a12 + b2*a22 + b3*a32; out[7] = b0*a03 + b1*a13 + b2*a23 + b3*a33; b0 = b[8]; b1 = b[9]; b2 = b[10]; b3 = b[11]; out[8] = b0*a00 + b1*a10 + b2*a20 + b3*a30; out[9] = b0*a01 + b1*a11 + b2*a21 + b3*a31; out[10] = b0*a02 + b1*a12 + b2*a22 + b3*a32; out[11] = b0*a03 + b1*a13 + b2*a23 + b3*a33; b0 = b[12]; b1 = b[13]; b2 = b[14]; b3 = b[15]; out[12] = b0*a00 + b1*a10 + b2*a20 + b3*a30; out[13] = b0*a01 + b1*a11 + b2*a21 + b3*a31; out[14] = b0*a02 + b1*a12 + b2*a22 + b3*a32; out[15] = b0*a03 + b1*a13 + b2*a23 + b3*a33; return out; },
+    fromQuat: function(out, q) { var x = q[0], y = q[1], z = q[2], w = q[3], x2 = x + x, y2 = y + y, z2 = z + z, xx = x * x2, yx = y * x2, yy = y * y2, zx = z * x2, zy = z * y2, zz = z * z2, wx = w * x2, wy = w * y2, wz = w * z2; out[0] = 1 - yy - zz; out[1] = yx + wz; out[2] = zx - wy; out[3] = 0; out[4] = yx - wz; out[5] = 1 - xx - zz; out[6] = zy + wx; out[7] = 0; out[8] = zx + wy; out[9] = zy - wx; out[10] = 1 - xx - yy; out[11] = 0; out[12] = 0; out[13] = 0; out[14] = 0; out[15] = 1; return out; }
+};
+
+var quat = (glMatrix && glMatrix.quat) || _global.quat || {
+    create: function() { return new Float32Array([0, 0, 0, 1]); },
+    fromEuler: function(out, euler) { var x = euler[0] * 0.5, y = euler[1] * 0.5, z = euler[2] * 0.5, sx = Math.sin(x), cx = Math.cos(x), sy = Math.sin(y), cy = Math.cos(y), sz = Math.sin(z), cz = Math.cos(z); out[0] = sx * cy * cz - cx * sy * sz; out[1] = cx * sy * cz + sx * cy * sz; out[2] = cx * cy * sz - sx * sy * cz; out[3] = cx * cy * cz + sx * sy * sz; return out; },
+    normalize: function(out, a) { var len = Math.sqrt(a[0]*a[0] + a[1]*a[1] + a[2]*a[2] + a[3]*a[3]); if (len > 0) { len = 1 / len; out[0] = a[0] * len; out[1] = a[1] * len; out[2] = a[2] * len; out[3] = a[3] * len; } return out; },
+    multiply: function(out, a, b) { var ax = a[0], ay = a[1], az = a[2], aw = a[3], bx = b[0], by = b[1], bz = b[2], bw = b[3]; out[0] = ax * bw + aw * bx + ay * bz - az * by; out[1] = ay * bw + aw * by + az * bx - ax * bz; out[2] = az * bw + aw * bz + ax * by - ay * bx; out[3] = aw * bw - ax * bx - ay * by - az * bz; return out; },
+    slerp: function(out, a, b, t) { var ax = a[0], ay = a[1], az = a[2], aw = a[3], bx = b[0], by = b[1], bz = b[2], bw = b[3], omega, cosom, sinom, scale0, scale1; cosom = ax * bx + ay * by + az * bz + aw * bw; if (cosom < 0.0) { cosom = -cosom; bx = -bx; by = -by; bz = -bz; bw = -bw; } if ((1.0 - cosom) > 0.000001) { omega = Math.acos(cosom); sinom = Math.sin(omega); scale0 = Math.sin((1.0 - t) * omega) / sinom; scale1 = Math.sin(t * omega) / sinom; } else { scale0 = 1.0 - t; scale1 = t; } out[0] = scale0 * ax + scale1 * bx; out[1] = scale0 * ay + scale1 * by; out[2] = scale0 * az + scale1 * bz; out[3] = scale0 * aw + scale1 * bw; return out; },
+    setAxisAngle: function(out, axis, rad) { rad = rad * 0.5; var s = Math.sin(rad); out[0] = s * axis[0]; out[1] = s * axis[1]; out[2] = s * axis[2]; out[3] = Math.cos(rad); return out; },
+    toEuler: function(out, q) { var x = q[0], y = q[1], z = q[2], w = q[3]; var sinr_cosp = 2 * (w * x + y * z); var cosr_cosp = 1 - 2 * (x * x + y * y); out[0] = Math.atan2(sinr_cosp, cosr_cosp); var sinp = 2 * (w * y - z * x); if (Math.abs(sinp) >= 1) out[1] = Math.sign(sinp) * Math.PI / 2; else out[1] = Math.asin(sinp); var siny_cosp = 2 * (w * z + x * y); var cosy_cosp = 1 - 2 * (y * y + z * z); out[2] = Math.atan2(siny_cosp, cosy_cosp); return out; }
+};
+
 function Math3DMat4()
 	{
         this.addInput("T", "vec3");
@@ -181,6 +221,64 @@ function Math3DMat4()
     };
 
     LiteGraph.registerNodeType("math3d/operation", Math3DOperation);
+
+    // ========== Vec3 Creation Node ==========
+    function Math3DVec3() {
+        this.addInput("x", "number");
+        this.addInput("y", "number");
+        this.addInput("z", "number");
+        this.addOutput("vec3", "vec3");
+        this.properties = { x: 1, y: 0, z: 0 };
+        this._data = new Float32Array(3);
+
+        var that = this;
+        this.addWidget("number", "X", this.properties.x, function(v) { that.properties.x = v; }, { step: 0.1 });
+        this.addWidget("number", "Y", this.properties.y, function(v) { that.properties.y = v; }, { step: 0.1 });
+        this.addWidget("number", "Z", this.properties.z, function(v) { that.properties.z = v; }, { step: 0.1 });
+        this.size = [160, 120];
+    }
+
+    Math3DVec3.title = "Vec3";
+    Math3DVec3.desc = "Creates a vec3 from x, y, z components";
+
+    Math3DVec3.prototype.onExecute = function() {
+        var x = this.getInputData(0);
+        var y = this.getInputData(1);
+        var z = this.getInputData(2);
+
+        this._data[0] = x !== undefined ? x : this.properties.x;
+        this._data[1] = y !== undefined ? y : this.properties.y;
+        this._data[2] = z !== undefined ? z : this.properties.z;
+
+        this.setOutputData(0, this._data);
+    };
+
+    LiteGraph.registerNodeType("math3d/vec3", Math3DVec3);
+
+    // ========== Vec3 Cross Product Node ==========
+    function Math3DVec3Cross() {
+        this.addInput("A", "vec3");
+        this.addInput("B", "vec3");
+        this.addOutput("AxB", "vec3");
+        this._data = new Float32Array(3);
+    }
+
+    Math3DVec3Cross.title = "Vec3 Cross";
+    Math3DVec3Cross.desc = "Cross product of two vec3s";
+
+    Math3DVec3Cross.prototype.onExecute = function() {
+        var a = this.getInputData(0);
+        var b = this.getInputData(1);
+        if (!a || !b) return;
+
+        this._data[0] = a[1] * b[2] - a[2] * b[1];
+        this._data[1] = a[2] * b[0] - a[0] * b[2];
+        this._data[2] = a[0] * b[1] - a[1] * b[0];
+
+        this.setOutputData(0, this._data);
+    };
+
+    LiteGraph.registerNodeType("math3d/vec3-cross", Math3DVec3Cross);
 
     function Math3DVec3Scale() {
         this.addInput("in", "vec3");

@@ -8,6 +8,24 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerGraphicsNodes(LiteGraph) {
+// Fix: Define clamp helper function
+function clamp(v, min, max) {
+    return v < min ? min : (v > max ? max : v);
+}
+
+// Fix: Define helper functions for color manipulation
+function hex2num(hex) {
+    if (hex.charAt(0) === '#') hex = hex.slice(1);
+    var r = parseInt(hex.substring(0, 2), 16);
+    var g = parseInt(hex.substring(2, 4), 16);
+    var b = parseInt(hex.substring(4, 6), 16);
+    return [r, g, b];
+}
+
+function colorToString(c) {
+    return "rgb(" + Math.round(c[0] * 255) + "," + Math.round(c[1] * 255) + "," + Math.round(c[2] * 255) + ")";
+}
+
 function GraphicsPlot() {
         this.addInput("A", "Number");
         this.addInput("B", "Number");

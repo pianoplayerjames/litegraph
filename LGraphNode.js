@@ -2286,7 +2286,7 @@ class LGraphNode {
                 if (target_node.onConnectionsChange) {
                     target_node.onConnectionsChange(
                         LiteGraph.OUTPUT,
-                        i,
+                        link_info.origin_slot,
                         false,
                         link_info,
                         output
@@ -2296,7 +2296,7 @@ class LGraphNode {
                     this.graph.onNodeConnectionChange(
                         LiteGraph.OUTPUT,
                         target_node,
-                        i
+                        link_info.origin_slot
                     );
                     this.graph.onNodeConnectionChange(LiteGraph.INPUT, this, slot);
                 }
