@@ -8,6 +8,7 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerMath3dNodes(LiteGraph) {
+var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
 function Math3DMat4()
 	{
         this.addInput("T", "vec3");
@@ -314,7 +315,7 @@ function Math3DMat4()
     LiteGraph.registerNodeType("math3d/vec3-dot", Math3DVec3Dot);
 
     //if glMatrix is installed...
-    if (global.glMatrix) {
+    if (_global.glMatrix) {
         function Math3DQuaternion() {
             this.addOutput("quat", "quat");
             this.properties = { x: 0, y: 0, z: 0, w: 1, normalize: false };

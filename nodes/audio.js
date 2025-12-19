@@ -8,8 +8,9 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerAudioNodes(LiteGraph) {
+var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
 var LGAudio = {};
-    global.LGAudio = LGAudio;
+    _global.LGAudio = LGAudio;
 
     LGAudio.getAudioContext = function() {
         if (!this._audio_context) {

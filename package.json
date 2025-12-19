@@ -1,6 +1,6 @@
 {
   "name": "litegraph-esm",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "LiteGraph.js - A graph node engine and editor converted to ES6 modules",
   "type": "module",
   "main": "./index.js",
@@ -51,7 +51,8 @@
     },
     "./nodes/*": {
       "import": "./nodes/*.js"
-    }
+    },
+    "./css/litegraph.css": "./css/litegraph.css"
   },
   "types": "./index.d.ts",
   "files": [
@@ -59,7 +60,8 @@
     "*.d.ts",
     "nodes/*.js",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "css/*.css"
   ],
   "keywords": [
     "graph",
@@ -74,11 +76,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/webarcade/litegraph-esm"
+    "url": "https://github.com/pianoplayerjames/litegraph"
   },
-  "homepage": "https://github.com/jagenjo/litegraph.js",
+  "homepage": "https://github.com/pianoplayerjames/litegraph",
   "bugs": {
-    "url": "https://github.com/webarcade/litegraph-esm/issues"
+    "url": "https://github.com/pianoplayerjames/litegraph/issues"
   },
   "engines": {
     "node": ">=14.0.0"

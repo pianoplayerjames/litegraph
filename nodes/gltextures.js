@@ -8,10 +8,11 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerGltexturesNodes(LiteGraph) {
-var LGraphCanvas = global.LGraphCanvas;
+var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
+var LGraphCanvas = _global.LGraphCanvas;
 
     //Works with Litegl.js to create WebGL nodes
-    global.LGraphTexture = null;
+    _global.LGraphTexture = null;
 
     if (typeof GL == "undefined")
 		return;
@@ -28,7 +29,7 @@ var LGraphCanvas = global.LGraphCanvas;
 		];
 	}
 
-	global.LGraphTexture = LGraphTexture;
+	_global.LGraphTexture = LGraphTexture;
 
 	LGraphTexture.title = "Texture";
 	LGraphTexture.desc = "Texture";
@@ -5307,7 +5308,7 @@ void main(void){\n\
 		var time = this.graph.getTime();
 		var ctx = gl;
 		var canvas = gl.canvas;
-		if( this.properties.use_html_canvas || !global.enableWebGLCanvas )
+		if( this.properties.use_html_canvas || !_global.enableWebGLCanvas )
 		{
 			if(!this._canvas)
 			{

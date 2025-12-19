@@ -8,7 +8,8 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerGlfxNodes(LiteGraph) {
-var LGraphTexture = global.LGraphTexture;
+var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
+var LGraphTexture = _global.LGraphTexture;
 
     //Works with Litegl.js to create WebGL nodes
     if (typeof GL != "undefined") {
@@ -137,7 +138,7 @@ var LGraphTexture = global.LGraphTexture;
 		*/
 
         LiteGraph.registerNodeType("fx/lens", LGraphFXLens);
-        global.LGraphFXLens = LGraphFXLens;
+        _global.LGraphFXLens = LGraphFXLens;
 
         /* not working yet
 	function LGraphDepthOfField()
@@ -249,7 +250,7 @@ var LGraphTexture = global.LGraphTexture;
 		";
 
 	LiteGraph.registerNodeType("fx/DOF", LGraphDepthOfField );
-	global.LGraphDepthOfField = LGraphDepthOfField;
+	_global.LGraphDepthOfField = LGraphDepthOfField;
 	*/
 
         //*******************************************************
@@ -496,7 +497,7 @@ var LGraphTexture = global.LGraphTexture;
 			}\n";
 
         LiteGraph.registerNodeType("fx/bokeh", LGraphFXBokeh);
-        global.LGraphFXBokeh = LGraphFXBokeh;
+        _global.LGraphFXBokeh = LGraphFXBokeh;
 
         //************************************************
 
@@ -576,7 +577,7 @@ var LGraphTexture = global.LGraphTexture;
             gl.disable(gl.BLEND);
             gl.disable(gl.DEPTH_TEST);
             var mesh = Mesh.getScreenQuad();
-            var camera = global.LS ? LS.Renderer._current_camera : null;
+            var camera = _global.LS ? LS.Renderer._current_camera : null;
             var camera_planes;
             if (camera) {
                 camera_planes = [
@@ -696,7 +697,7 @@ var LGraphTexture = global.LGraphTexture;
 			}\n";
 
         LiteGraph.registerNodeType("fx/generic", LGraphFXGeneric);
-        global.LGraphFXGeneric = LGraphFXGeneric;
+        _global.LGraphFXGeneric = LGraphFXGeneric;
 
         // Vigneting ************************************
 
@@ -791,7 +792,7 @@ var LGraphTexture = global.LGraphTexture;
 			";
 
         LiteGraph.registerNodeType("fx/vigneting", LGraphFXVigneting);
-        global.LGraphFXVigneting = LGraphFXVigneting;
+        _global.LGraphFXVigneting = LGraphFXVigneting;
     }
 }
 

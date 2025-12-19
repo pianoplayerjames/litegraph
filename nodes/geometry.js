@@ -8,6 +8,7 @@
  * @param {Object} LiteGraph - The LiteGraph namespace
  */
 export function registerGeometryNodes(LiteGraph) {
+var _global = typeof globalThis !== 'undefined' ? globalThis : (typeof window !== 'undefined' ? window : (typeof global !== 'undefined' ? global : {}));
 var view_matrix = new Float32Array(16);
 	var projection_matrix = new Float32Array(16);
 	var viewprojection_matrix = new Float32Array(16);
@@ -60,7 +61,7 @@ var view_matrix = new Float32Array(16);
 		this._last_radius = null;
 	}
 
-	global.LGraphPoints3D = LGraphPoints3D;
+	_global.LGraphPoints3D = LGraphPoints3D;
 
 	LGraphPoints3D.RECTANGLE = 1;
 	LGraphPoints3D.CIRCLE = 2;
