@@ -24,8 +24,8 @@ bun add litegraph-esm
 
 ```javascript
 // Import everything
-import 'litegraph-esm/css/litegraph.css';
 import LiteGraph, { LGraph, LGraphNode, LGraphCanvas } from 'litegraph-esm';
+import 'litegraph-esm/css/litegraph.css';
 
 // Or import individual modules
 import { LGraph } from 'litegraph-esm/LGraph';
@@ -35,8 +35,8 @@ import { LGraphCanvas } from 'litegraph-esm/LGraphCanvas';
 ### Basic Example
 
 ```javascript
-import 'litegraph-esm/css/litegraph.css';
 import LiteGraph, { LGraph, LGraphCanvas } from 'litegraph-esm';
+import 'litegraph-esm/css/litegraph.css';
 
 // Create a graph
 const graph = new LGraph();
@@ -61,13 +61,24 @@ node1.connect(0, node2, 0);
 graph.start();
 ```
 
+### Continuous Rendering
+
+By default, the canvas only redraws when user interaction occurs (mouse movement, clicks, etc.). If you have nodes that update continuously (like a time node), you need to trigger redraws after each graph execution:
+
+```javascript
+// Redraw canvas after each graph step
+graph.onAfterExecute = () => graphCanvas.draw(true);
+
+graph.start();
+```
+
 ### Registering Custom Nodes
 
 Use ES6 class syntax extending `LGraphNode` (recommended):
 
 ```javascript
-import 'litegraph-esm/css/litegraph.css';
 import LiteGraph, { LGraphNode } from 'litegraph-esm';
+import 'litegraph-esm/css/litegraph.css';
 
 // Define a custom node using ES6 class
 class MultiplierNode extends LGraphNode {
