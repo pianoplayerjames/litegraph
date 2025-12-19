@@ -24,6 +24,7 @@ bun add litegraph-esm
 
 ```javascript
 // Import everything
+import 'litegraph-esm/css/litegraph.css';
 import LiteGraph, { LGraph, LGraphNode, LGraphCanvas } from 'litegraph-esm';
 
 // Or import individual modules
@@ -34,6 +35,7 @@ import { LGraphCanvas } from 'litegraph-esm/LGraphCanvas';
 ### Basic Example
 
 ```javascript
+import 'litegraph-esm/css/litegraph.css';
 import LiteGraph, { LGraph, LGraphCanvas } from 'litegraph-esm';
 
 // Create a graph
@@ -64,6 +66,7 @@ graph.start();
 Use ES6 class syntax extending `LGraphNode` (recommended):
 
 ```javascript
+import 'litegraph-esm/css/litegraph.css';
 import LiteGraph, { LGraphNode } from 'litegraph-esm';
 
 // Define a custom node using ES6 class
